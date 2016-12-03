@@ -13,16 +13,12 @@ reload = browserSync.reload
 
 
 
-
-
-
 # scripts Task
 gulp.task "scripts", ->
   gulp.src("app/src/coffee/**/*.coffee")
     .pipe(plumber())
     .pipe(rename({suffix: ".min"}))
     .pipe(coffee({bare: true}))
-    .pipe(uglify())
     .pipe(gulp.dest("app/js"))
     .pipe(reload({stream:true}))
 

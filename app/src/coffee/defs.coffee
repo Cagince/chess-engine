@@ -66,5 +66,18 @@ SQUARES =
   NO_SQ:99
   OFFBOARD:100
 
+BOOL =
+  FALSE:0
+  TRUE:1
+
+FILESBOARD = new Array(BOARD_SQUARE_NUMBER)
+RANKSBOARD = new Array(BOARD_SQUARE_NUMBER)
+
+
+
+FR2SQ = (f, r) ->
+  (21+f) + (r*10)
+
+
 
 
