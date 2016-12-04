@@ -1,4 +1,3 @@
-
 $ ->
   $("#SetFen").click ->
     fenStr = $("#fenIn").val()

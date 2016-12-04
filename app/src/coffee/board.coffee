@@ -109,6 +109,25 @@ GeneratePosKey = ->
 
   return finalKey
 
+
+###
+# Print piece list
+###
+
+PrintPieceLists = ->
+  console.log "Printing piece Lists..."
+  for piece in [PIECES.wP..PIECES.bK]
+    for pceNum in [0..GameBoard.pieceAmount[piece]-1]
+      console.log "piece : " + PceChar[piece] + " on " + PringSq( GameBoard.pieceListArray[PIECEINDEX(piece,pceNum)])
+
+
+
+
+
+
+
+
+
 ###
 #
 ###
@@ -130,7 +149,8 @@ UpdateListMaterial = ->
 
       GameBoard.pieceListArray[PIECEINDEX(piece,GameBoard.pieceAmount[piece])] = sq
       GameBoard.pieceAmount[piece]++
-
+  
+  PrintPieceLists()
 
 
 
