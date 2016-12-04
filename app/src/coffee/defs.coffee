@@ -88,6 +88,14 @@ MAXDEPTH = 64 # max depth the engine will search
 FILESBOARD = new Array(BOARD_SQUARE_NUMBER)
 RANKSBOARD = new Array(BOARD_SQUARE_NUMBER)
 
+START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+
+PceChar = ".PNBRQKpnbrqk"
+SideChar = "wb-"
+RankChar = "12345678"
+FileChar = "abcdefgh"
+
 PieceBig = [
   BOOL.FALSE
   BOOL.FALSE
@@ -265,7 +273,7 @@ Sq64tosq120 = new Array(64)
 
 
 FR2SQ = (f, r) ->
-  (21+f) + (r*10)
+  ( (21 + (f) ) + ( (r) * 10 ) )
 
 RAND_32 = ->
   (Math.floor((Math.random()*255)+1) << 23) | (Math.floor((Math.random()*255)+1) << 16) | (Math.floor((Math.random()*255) + 1) << 8) | Math.floor((Math.random()*255)+1)
@@ -275,3 +283,5 @@ SQ64 = (piece) ->
 
 SQ120 = (piece) ->
   Sq64tosq120[piece]
+
+

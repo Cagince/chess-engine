@@ -1,6 +1,8 @@
 $ ->
   init()
   console.log("Initialization complete")
+  ParseFen(START_FEN)
+  PrintBoard()
 
 
 initFilesRanksBRD = ->
@@ -59,3 +61,4 @@ init = ->
   initFilesRanksBRD()
   initHashKeys()
   initLookupTables()
+

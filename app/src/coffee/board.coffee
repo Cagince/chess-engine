@@ -36,6 +36,45 @@ GameBoard.moveScores = new Array(MAXDEPTH * MAXPOSITIONMOVES)
 GameBoard.moveListStart = new Array(MAXDEPTH)
 
 
+###
+# Print game board to console
+###
+PrintBoard = ->
+  console.log( "printing board...")
+
+
+  console.log("\nGame Board: \n")
+  for rank in [RANKS.RANK_8..RANKS.RANK_1]
+    line = RankChar[rank]+ "|"
+    for file in [FILES.FILE_A..FILES.FILE_H]
+      sq = FR2SQ(file,rank)
+      piece = GameBoard.pieces[sq]
+      line +=  " " + PceChar[piece] + " "
+    console.log(line)
+
+  console.log("------------------------------ ")
+  line = "  "
+  for file in [FILES.FILE_A..FILES.FILE_H]
+    line += " " + FileChar[file] + " "
+  
+  # enpas and side
+  console.log(line)
+  console.log("side: " + SideChar[GameBoard.side])
+  console.log("enPas: " + GameBoard.enPasant)
+  line = ""
+  
+  # castling permissions
+  line += "K" if (GameBoard.castlingPermission && CASTLEBIT.WKCA)
+  line += "Q" if (GameBoard.castlingPermission && CASTLEBIT.WQCA)
+  line += "k" if (GameBoard.castlingPermission && CASTLEBIT.BKCA)
+  line += "q" if (GameBoard.castlingPermission && CASTLEBIT.BQCA)
+  
+  # 
+  console.log("castle: " + line)
+  console.log("Key: " + GameBoard.posKey.toString(16))
+
+
+
 
 
 
@@ -46,7 +85,8 @@ GameBoard.moveListStart = new Array(MAXDEPTH)
 # and add-remove pieces by xor'ing the final key
 ###
 GeneratePosKey = ->
-  
+  console.log("Generating Position Key")
+
   piece = PIECES.EMPTY
   finalKey = 0
   
@@ -54,13 +94,13 @@ GeneratePosKey = ->
   for sq in [0..BOARD_SQUARE_NUMBER]
     
     piece = GameBoard.pieces[sq]
-    # xor square hash into finalkey if not empty and offboard  
+    # xor square hash into finalKey if not empty and offboard  
     if piece != PIECES.EMPTY && piece != SQUARES.OFFBOARD
       finalKey ^= PieceKeys[(piece*120)+sq]
    
   # xor colour key if white 
   if GameBoard.side == COLOURS.WHITE
-    finalkey ^= SideKey
+    finalKey ^= SideKey
   # xor en Passant key 
   if GameBoard.enPasant != SQUARES.NO_SQ
     finalKey ^= PieceKeys[GameBoard.enPasant]
@@ -69,7 +109,27 @@ GeneratePosKey = ->
 
   return finalKey
 
+###
+#
+###
+UpdateListMaterial = ->
+  console.log("Updating List Material...")
+  
+  GameBoard.pieceListArray.fill(PIECES.EMPTY)
+  GameBoard.material.fill(0)
+  GameBoard.pieceAmount.fill(0)
 
+  for i in [0..63]
+    sq = SQ120(i)
+    piece = GameBoard.pieces[sq]
+    if piece != PIECES.EMPTY
+      console.log("piece " + piece + " on " + sq)
+      colour = PieceCol[piece]
+      
+      GameBoard.material[colour] += PieceVal[piece]
+
+      GameBoard.pieceListArray[PIECEINDEX(piece,GameBoard.pieceAmount[piece])] = sq
+      GameBoard.pieceAmount[piece]++
 
 
 
@@ -79,22 +139,20 @@ GeneratePosKey = ->
 # clear all to 0 , offset etc.
 ###
 ResetBoard = ->
+  console.log("reseting Board")
   
   # clear board 
   GameBoard.pieces.fill(SQUARES.OFFBOARD)
-  Gameboard.pieceListArray.fill(PIECES.EMPTY)
-  Gameboard.material.fill(0)
-  Gameboard.pieceAmount.fill(0)
-  Gameboard.pieces[SQ120(i)] for i in [0..64]# not sureabout the not.
+  GameBoard.pieces[SQ120(i)] for i in [0..64]# not sureabout the not.
   
-  Gameboard.side = COLOURS.BOTH
-  Gameboard.enPasant = SQUARES.NO_SQ
-  Gameboard.fiftymove = 0
-  Gameboard.ply = 0
-  Gameboard.playHistory = 0
-  Gameboard.castlingPermission = 0
-  Gameboard.positionKey = 0
-  Gameboard.moveListStart[Gameboard.ply] = 0
+  GameBoard.side = COLOURS.BOTH
+  GameBoard.enPasant = SQUARES.NO_SQ
+  GameBoard.fiftymove = 0
+  GameBoard.ply = 0
+  GameBoard.playHistory = 0
+  GameBoard.castlingPermission = 0
+  GameBoard.positionKey = 0
+  GameBoard.moveListStart[GameBoard.ply] = 0
 
 
 
@@ -103,8 +161,9 @@ ResetBoard = ->
 # Method for parsing Forsyth–Edwards Notation String
 # more info on FEN: https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
 ###
-PaeseFedn = (fen) ->
-  
+ParseFen = (fen) ->
+ 
+  console.log("parsing FEN...")
   ResetBoard()
 
   fenCnt = 0
@@ -141,8 +200,8 @@ PaeseFedn = (fen) ->
         continue
       else
         alert "not a valid FEN"
-
-    for i in [0..count]
+    
+    for i in [1..count]
       sq120 = FR2SQ(file,rank)
       GameBoard.pieces[sq120] = piece
       file++
@@ -173,10 +232,11 @@ PaeseFedn = (fen) ->
     file = fen[fenCnt].charCodeAt() - 'a'.charCodeAt()
     rank = fen[fenCnt + 1].charCodeAt() - '1'.charCodeAt()
     console.log "fen[fenCnt]: " + fen[fenCnt], " File: " + file + " Rank: " + rank
-    GameBoard.enPasant = FR2SQ(rank,file)
+    GameBoard.enPasant = FR2SQ(file,rank)
   
 
-  Gameboard.posKey = GeneratePosKey()
+  GameBoard.posKey = GeneratePosKey()
+  UpdateListMaterial()
 
 
 
