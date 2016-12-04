@@ -77,6 +77,14 @@ BOOL =
   FALSE:0
   TRUE:1
 
+
+
+MAXGAMEMOVE = 2048 # list of moves board has in given position
+MAXPOSITIONMOVES = 256
+MAXDEPTH = 64 # max depth the engine will search 
+
+
+
 FILESBOARD = new Array(BOARD_SQUARE_NUMBER)
 RANKSBOARD = new Array(BOARD_SQUARE_NUMBER)
 
