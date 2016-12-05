@@ -96,6 +96,14 @@ SideChar = "wb-"
 RankChar = "12345678"
 FileChar = "abcdefgh"
 
+
+KnightDirections = [-8, -19, -21, -12, 8, 19, 21, 12]
+RookDirections = [-1, -10, 1, 10]
+BishopDirections = [ -9, -11, 11, 9]
+KingDirections = [-1,-10,1,10,-9,-11,9,11]
+
+
+
 PieceBig = [
   BOOL.FALSE
   BOOL.FALSE

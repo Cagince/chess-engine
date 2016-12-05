@@ -258,14 +258,47 @@ ParseFen = (fen) ->
   GameBoard.posKey = GeneratePosKey()
   UpdateListMaterial()
 
+###
+# check if square is being attacked
+#
+###
 
+SquareAttacked = (sq,side) ->
+  
+  # check if pawn is attacking
+  if side == COLOURS.WHITE
+    if GameBoard.pieces[sq-11] == PIECES.wP || GameBoard.pieces[sq-9] == PIECES.wP
+      true
+  else
+    if GameBoard.pieces[sq+11] == PIECES.bP || GameBoard.pieces[sq+9] == PIECES.bP
+      true
+  
+  for i in KnightDirections
+    piece =  GameBoard.pieces[sq + i]
+    return true if piece != SQUARES.OFFBOARD && PieceCol[piece] == side && PieceKnight[piece] == BOOL.TRUE
 
+  for direction in RookDirections
+    t_sq = sq + direction
+    piece = GameBoard.pieces[t_sq]
+    while piece != SQUARES.OFFBOARD
+      if piece != PIECES.EMPTY && PieceRookQueen[piece] == BOOL.TRUE && PieceCol[piece] == side then true else break
+      t_sq += direction
+      piece = GameBoard.pieces[t_sq]
 
+    
+  for direction in BishopDirections
+    t_sq = sq + direction
+    piece = GameBoard.pieces[t_sq]
+    while piece != SQUARES.OFFBOARD
+      if piece != PIECES.EMPTY && PieceBishopQueen[piece] == BOOL.TRUE && PieceCol[piece] == side then true else break
+      t_sq += direction
+      piece = GameBoard.pieces[t_sq]
 
+  for i in KingDirections
+    piece =  GameBoard.pieces[sq + i]
+    return true if piece != SQUARES.OFFBOARD && PieceCol[piece] == side && PieceKing[piece] == BOOL.TRUE
 
-
-
-
+  BOOL.FALSE
 
 
 
