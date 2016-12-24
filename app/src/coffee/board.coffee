@@ -262,7 +262,6 @@ ParseFen = (fen) ->
 # check if square is being attacked
 #
 ###
-
 SquareAttacked = (sq,side) ->
   
   # check if pawn is attacking

@@ -3,6 +3,8 @@ $ ->
   console.log("Initialization complete")
   ParseFen(START_FEN)
   PrintBoard()
+  GenerateMoves()
+
 
 ###
 # initialize files, ranks 

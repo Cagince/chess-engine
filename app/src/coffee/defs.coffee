@@ -293,3 +293,48 @@ SQ120 = (piece) ->
   Sq64tosq120[piece]
 
 
+###
+#
+# 0000 0000 0000 0000 0000 0000 0000
+# 
+# 0000 0000 0000 0000 0000 0111 1111 ->  from SQ 0x7F
+# 0000 0000 0000 0011 1111 1000 0000 ->  to SQ >> 7 , 0x7F
+# 0000 0000 0011 1100 0000 0000 0000 ->  Captured >> 14 , 0xF
+# 0000 0000 0100 0000 0000 0000 0000 ->  EP 0x40000
+# 0000 0000 1000 0000 0000 0000 0000 ->  Pawn start 0x8000
+# 0000 1111 1000 0000 0000 0000 0000 ->  Promoted piece >> 20 , 0xF
+# 0001 0000 1000 0000 0000 0000 0000 ->  Castle 0x1000000
+#
+###
+
+FROMSQ = (m) ->
+  m & 0x7F
+
+TOSQ = (m) ->
+  (m>>7)& 0x7F
+
+CAPTURE = (m) ->
+  (m>>14)& 0xF
+
+PROMOTED = (m) ->
+  (m>>20)& 0xF
+
+MoveFlagEP = 0x40000
+MoveFlagPS = 0x80000
+MoveFlagCA = 0x1000000
+
+MoveFlagCAP = 0x7C000
+MoveFlagPROM = 0xF00000
+NoMov = 0
+
+
+SQOFFBOARD = (sq) ->
+  if FILESBOARD[sq] == SQUARES.OFFBOARD
+    BOOL.TRUE
+  BOOL.FALSE
+
+
+
+
+
+
